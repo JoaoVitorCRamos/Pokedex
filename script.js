@@ -32,6 +32,7 @@ searchButton.addEventListener("click", () => {
     .then(data => {
       currentPokemonId = data.id;
       updatePokemonInfo(currentPokemonId);
+      searchInput.value = "";
     })
     .catch(() => {
       alert("Pokémon not found!");
