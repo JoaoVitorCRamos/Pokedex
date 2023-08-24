@@ -12,7 +12,11 @@ async function fetchPokemonData(id) {
   try {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
     const data = await response.json();
-    return data;
+
+    const speciesResponse = await fetch(data.species.url);
+    const speciesData = await speciesResponse.json();
+
+    return { ...data, species: speciesData };
   } catch (error) {
     console.error("Error fetching Pokémon data:", error);
   }
@@ -22,6 +26,7 @@ async function updatePokemonInfo(id) {
   const pokemon = await fetchPokemonData(id);
   pokemonNumber.textContent = `#${pokemon.id.toString().padStart(3, "0")}`;
   pokemonName.textContent = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
+  pokemonType.textContent = `Type: ${pokemon.types.map(type => type.type.name).join(" / ")}`;
   pokemonImage.src = pokemon.sprites.front_default;
 }
 
